@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>EPP - Login</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-gradient-epp-primary">
+
+    <div class="container">
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+						
+						<div class="row pt-4 pb-4 bg-gradient-epp-primary text-white ">
+							<div class="col-6">
+								<div class="row"> 
+									<div class="col-3 text-right">
+										<img src="img/govt.png" class="img-fluid">
+
+									</div>
+									<div class="col-9 wrap-text text-left">
+										<strong>Government of the <br> People's Republic of Bangladesh </strong>
+									</div>
+								</div>
+							
+							</div>
+							<div class="col-6">
+								<div class="row"> 
+									<div class="col-9 text-right wrap-text">
+										<strong>Department of<br> Immigration & Passports </strong>
+									</div>
+									<div class="col-3 text-left">
+										<img src="img/epp.png" class="img-fluid" >
+
+									</div>
+									
+								</div>
+							
+							</div>
+						
+						</div>
+						<div class="clear"></div>
+						
+						
+						
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+							<div class="col-3"></div>
+                            <div class="col-md-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">E-passport Dashboard</h1>
+                                    </div>
+                                    <form class="user" id="login" name="login" method="post">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user"
+                                                id="username" name="username" aria-describedby="emailHelp"
+                                                placeholder="Enter username..." required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user"
+                                                id="password" name="password" placeholder="Password" required>
+                                        </div>
+										<div class="form-group text-center">
+                                            <span id="errorMsg" class="text-danger"></span>
+                                        </div>
+										<input  type="submit" class="btn btn-md btn-success" style="border-radius: 10rem;width: 100%;" value="login"/>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+
+<script>
+	$(document).ready(function() {
+$('#errorMsg').text('')
+var is_success = true;
+
+$("#login").submit(function(e) {
+    
+	e.preventDefault(); // prevent actual form submit
+    let  form = $(this);
+	var object = {};
+	object.username = document.getElementById("username").value;
+	object.password = document.getElementById("password").value;
+	console.log(JSON.stringify(object));
+
+    //let url = 'https://smsgateway.synesisit.info/api/v1/issueToken'; //get submit url [replace url here if desired]
+    let url = 'http://103.92.84.131/api/v1/issueToken'; //get submit url [replace url here if desired]
+    $.ajax({
+         type: "POST",
+		 contentType: "application/json",
+         url: url,
+         data: JSON.stringify(object), // serializes form input
+         success: function(data){
+		 localStorage.setItem("isLogin", true);
+		 localStorage.setItem("username",object.username);
+		 localStorage.setItem("token",data.access_token);
+			window.location.href = './dashboard.html'//change this in deployment.
+             console.log(data);
+         },
+		 error: function(e){
+		 localStorage.setItem("isLogin", false);
+		 is_success = false;
+		   localStorage.setItem("storageName",is_success);
+		    console.log(is_success);
+			console.log('error', e);
+			$('#errorMsg').text('Username & Password do not match!!');	
+			
+		 }
+    });
+});
+
+});
+
+
+</script>
+
+
+
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+</body>
+
+</html>
